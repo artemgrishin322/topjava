@@ -30,14 +30,7 @@
         <th></th>
     </tr>
     <c:forEach items="${meals}" var="meal">
-        <c:choose>
-            <c:when test="${meal.excess}">
-                <tr style="color: red">
-            </c:when>
-            <c:otherwise>
-                <tr style="color: darkgreen">
-            </c:otherwise>
-        </c:choose>
+        <tr style=" color: ${meal.excess ? 'red' : 'darkgreen'}">
             <td>${f:formatLocalDateTime(meal.dateTime, 'yyyy-MM-dd HH:mm')}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
