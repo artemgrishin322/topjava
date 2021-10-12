@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: godsa
@@ -29,16 +30,18 @@
 <body>
     <h3><a href="index.html">Home</a></h3>
     <hr>
-<form method="post" action="${pageContext.request.contextPath}/meals">
+<form method="post" action="${pageContext.request.contextPath}/meals?action=default">
     <div class="settings">
+        <input type="number" name="id" hidden="hidden" value="<c:out value="${meal.id}"/>">
+
         <label>DateTime</label>
-        <input type="datetime-local" name="dateTime">
+        <input type="datetime-local" name="dateTime" value="<c:out value="${meal.dateTime}"/>">
 
         <label>Description</label>
-        <input type="text" name="desc">
+        <input type="text" name="desc" value="<c:out value="${meal.description}"/>">
 
         <label>Calories</label>
-        <input type="number" name="cal">
+        <input type="number" name="cal" value="<c:out value="${meal.calories}"/>">
     </div>
     <input type="submit" value="Save">
 </form>

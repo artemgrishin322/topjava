@@ -1,15 +1,7 @@
 package ru.javawebinar.topjava.service;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
-
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealServiceImpl implements MealService {
     @Override
@@ -18,17 +10,32 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public void delete(AtomicInteger id) {
+    public void delete(int id) {
+        MealsUtil.getMeals().removeIf(meal -> meal.getId() == id);
+    }
 
+
+    @Override
+    public void update(Meal meal) {
+        for (Meal oldMeal : MealsUtil.getMeals()) {
+            if (meal.getId() == oldMeal.getId()) {
+                oldMeal.setDateTime(meal.getDateTime());
+                oldMeal.setDescription(meal.getDescription());
+                oldMeal.setCalories(meal.getCalories());
+            }
+        }
     }
 
     @Override
-    public void update(MealTo meal) {
+    public Meal getById(int id) {
+        Meal foundMeal = null;
+        for (Meal meal : MealsUtil.getMeals()) {
+            if (meal.getId() == id) {
+                foundMeal = meal;
+                break;
+            }
+        }
 
-    }
-
-    @Override
-    public MealTo getById(AtomicInteger meal) {
-        return null;
+        return foundMeal;
     }
 }

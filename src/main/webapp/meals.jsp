@@ -19,7 +19,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<h3><a href="mealCreation.jsp">Create meal</a></h3>
+<h3><a href="${pageContext.request.contextPath}/meals?action=create">Create meal</a></h3>
 <jsp:useBean id="meals" scope="request" type="java.util.List<ru.javawebinar.topjava.model.MealTo>"/>
 <table>
     <tr>

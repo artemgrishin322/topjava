@@ -13,10 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
@@ -48,19 +46,25 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("Redirect to meals");
         String action = req.getParameter("action").toLowerCase();
-
         switch (action) {
             case "delete" : {
                 int mealId = Integer.parseInt(req.getParameter("mealID"));
+                service.delete(mealId);
             }
+            break;
             case "update" : {
                 int mealId = Integer.parseInt(req.getParameter("mealID"));
+                req.setAttribute("meal", service.getById(mealId));
+                req.getRequestDispatcher("/mealCreation.jsp").forward(req, resp);
             }
-            default: {
-                req.setAttribute("meals", filter.apply(MealsUtil.getMeals(), MealsUtil.CALORIES_LIMIT));
-                req.getRequestDispatcher("/meals.jsp").forward(req, resp);
+            break;
+            case "create" : {
+                req.getRequestDispatcher("/mealCreation.jsp").forward(req, resp);
             }
         }
+
+        req.setAttribute("meals", filter.apply(MealsUtil.getMeals(), MealsUtil.CALORIES_LIMIT));
+        req.getRequestDispatcher("/meals.jsp").forward(req, resp);
     }
 
     @Override
@@ -76,8 +80,14 @@ public class MealServlet extends HttpServlet {
 
         String desc = req.getParameter("desc");
         int calories = Integer.parseInt(req.getParameter("cal"));
-
-        service.add(new Meal(dateTime, desc, calories));
+        String idStr = req.getParameter("id");
+        if (idStr == null || idStr.isEmpty()) {
+            service.add(new Meal(dateTime, desc, calories));
+        } else {
+            Meal mealToBeUpdated = new Meal(dateTime, desc, calories);
+            mealToBeUpdated.setId(Integer.parseInt(idStr));
+            service.update(mealToBeUpdated);
+        }
 
         doGet(req, resp);
     }
