@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
@@ -25,17 +26,6 @@ public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     private final MealService service;
-
-    private final BiFunction<List<Meal>,Integer, List<MealTo>> filter = (meals, limit) -> {
-        Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
-                .collect(
-                        Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
-                );
-
-        return meals.stream()
-                .map(meal -> new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), caloriesSumByDate.get(meal.getDate()) > limit))
-                .collect(Collectors.toList());
-    };
 
     public MealServlet() {
         super();
@@ -63,7 +53,7 @@ public class MealServlet extends HttpServlet {
             }
         }
 
-        req.setAttribute("meals", filter.apply(MealsUtil.getMeals(), MealsUtil.CALORIES_LIMIT));
+        req.setAttribute("meals", MealsUtil.filteredByStreams(MealsUtil.getMeals(), LocalTime.MIN, LocalTime.MAX, MealsUtil.CALORIES_LIMIT));
         req.getRequestDispatcher("/meals.jsp").forward(req, resp);
     }
 
