@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="f" uri="/WEB-INF/functions.tld"%>
+<%@ taglib uri="/WEB-INF/functions.tld" prefix="f" %>
 
 <html>
 <head>
@@ -20,7 +20,6 @@
 <hr>
 <h2>Meals</h2>
 <h3><a href="${pageContext.request.contextPath}/meals?action=create">Create meal</a></h3>
-<jsp:useBean id="meals" scope="request" type="java.util.List<ru.javawebinar.topjava.model.MealTo>"/>
 <table>
     <tr>
         <th>Date</th>
