@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.MealServiceImpl;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
 
@@ -22,7 +24,6 @@ public class MealServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        super.init();
         service = new MealServiceImpl();
     }
 
@@ -34,14 +35,14 @@ public class MealServlet extends HttpServlet {
             switch (action.toLowerCase()) {
                 case "delete": {
                     log.debug("delete action");
-                    int mealId = service.parseIdFromRequest(req);
+                    int mealId = parseIdFromRequest(req);
                     service.delete(mealId);
                     resp.sendRedirect("meals");
                 }
                 return;
                 case "update": {
                     log.debug("update action");
-                    int mealId = service.parseIdFromRequest(req);
+                    int mealId = parseIdFromRequest(req);
                     req.setAttribute("meal", service.getById(mealId));
                     req.getRequestDispatcher("/mealCreation.jsp").forward(req, resp);
                 }
@@ -53,7 +54,7 @@ public class MealServlet extends HttpServlet {
             }
         }
 
-        req.setAttribute("meals", service.getViewList());
+        req.setAttribute("meals", MealsUtil.filteredByStreams(service.getMealList(), LocalTime.MIN, LocalTime.MAX, MealsUtil.CALORIES_LIMIT));
         req.getRequestDispatcher("/meals.jsp").forward(req, resp);
     }
 
@@ -81,5 +82,9 @@ public class MealServlet extends HttpServlet {
         }
 
        resp.sendRedirect("meals");
+    }
+
+    private static int parseIdFromRequest(HttpServletRequest req) {
+        return Integer.parseInt(req.getParameter("mealID"));
     }
 }
