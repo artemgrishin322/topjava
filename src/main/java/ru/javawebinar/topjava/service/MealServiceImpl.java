@@ -32,7 +32,10 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal update(Meal meal) {
-        meals.put(meal.getId(), meal);
+        if (meals.containsKey(meal.getId())) {
+            meals.put(meal.getId(), meal);
+        } else throw new IllegalArgumentException("Illegal value of user id");
+
         return meal;
     }
 
