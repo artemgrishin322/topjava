@@ -14,15 +14,51 @@
         .excess {
             color: red;
         }
+
+        dl {
+            margin: 8px 0;
+            padding: 0;
+        }
+
+        dt {
+            display: inline-grid;
+            width: 100px;
+        }
+
+        dd {
+            display: inline-block;
+            margin-left: 5px;
+            vertical-align: top;
+        }
     </style>
 </head>
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
+
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
+    <form method="post" action="meals?action=filter">
+        <dl>
+            <dt>Start date:</dt>
+            <dd><input type="date" name="startDate"></dd>
+        </dl>
+        <dl>
+            <dt>End date:</dt>
+            <dd><input type="date" name="endDate"></dd>
+        </dl>
+        <dl>
+            <dt>Start time:</dt>
+            <dd><input type="time" name="startTime"></dd>
+        </dl>
+        <dl>
+            <dt>End Time:</dt>
+            <dd><input type="time" name="endTime"></dd>
+        </dl>
+        <button type="submit" >Filter</button>
+    </form>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>

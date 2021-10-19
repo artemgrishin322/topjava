@@ -7,7 +7,7 @@ import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -35,35 +35,53 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        Map<Integer,Meal> userMeals = repository.getOrDefault(userId, new ConcurrentHashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
+            Map<Integer,Meal> userMeals = repository.computeIfAbsent(userId, id -> new ConcurrentHashMap<>());
             userMeals.put(meal.getId(), meal);
-            repository.put(userId, userMeals);
             return meal;
         }
         // handle case: update, but not present in storage
-        return repository.computeIfPresent(userId, (id, mealMap) -> {
-            mealMap.put(meal.getId(), meal);
-            return mealMap;
-        }).get(meal.getId());
+        Map<Integer,Meal> userMeals;
+        if ((userMeals = repository.get(userId)) != null) {
+            return userMeals.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        }
+        return null;
     }
 
     @Override
     public boolean delete(int mealId, int userId) {
-        return repository.get(userId).remove(mealId) != null;
+        Map<Integer,Meal> userMeals;
+        if ((userMeals = repository.get(userId)) != null) {
+            return userMeals.remove(mealId) != null;
+        }
+        return false;
     }
 
     @Override
     public Meal get(int mealId, int userId) {
-        return repository.get(userId).get(mealId);
+        Map<Integer,Meal> userMeals;
+        if ((userMeals = repository.get(userId)) != null) {
+            return userMeals.get(mealId);
+        }
+        return null;
     }
 
     @Override
-    public Collection<Meal> getAll(int userId) {
-        return repository.get(userId).values().stream()
-                .sorted((meal1, meal2) -> meal2.getDate().compareTo(meal1.getDate()))
-                .collect(Collectors.toList());
+    public List<Meal> getAll(int userId) {
+        String suffix = " of user " + userId;
+        Map<Integer,Meal> userMeals;
+        if ((userMeals = repository.get(userId)) != null) {
+            return userMeals.values().stream()
+                    .sorted(Comparator.comparing(Meal::getDate).reversed())
+                    .peek(meal -> {
+                        if (!meal.getDescription().endsWith(suffix)) {
+                            meal.setDescription(meal.getDescription() + suffix);
+                        }
+                    })
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 }
 
