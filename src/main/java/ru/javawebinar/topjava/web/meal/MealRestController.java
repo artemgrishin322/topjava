@@ -55,10 +55,10 @@ public class MealRestController {
     }
 
     public List<MealTo> getFilteredList(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
-        if (startDate == null) startDate = LocalDate.MIN;
-        if (endDate == null) endDate = LocalDate.MAX;
-        if (startTime == null) startTime = LocalTime.MIN;
-        if (endTime == null) endTime = LocalTime.MAX;
+        startDate = startDate == null ? LocalDate.MIN : startDate;
+        endDate = endDate == null ? LocalDate.MAX : endDate;
+        startTime = startTime == null ? LocalTime.MIN : startTime;
+        endTime = endTime == null ? LocalTime.MAX : endTime;
 
         log.info("get filtered meals between {} and {} date, {} and {} time", startDate, endDate, startTime, endTime);
         List<Meal> filteredMeals = service.getFiltered(startDate, endDate, SecurityUtil.authUserId());
