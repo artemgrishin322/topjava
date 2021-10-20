@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class MealService {
     }
 
     public void delete(int mealId, int userId) {
-       checkNotFoundWithId(repository.delete(mealId, userId), mealId);
+        checkNotFoundWithId(repository.delete(mealId, userId), mealId);
     }
 
     public Meal get(int mealId, int userId) {
@@ -37,5 +38,9 @@ public class MealService {
 
     public List<Meal> getAll(int userId) {
         return new ArrayList<>(repository.getAll(userId));
+    }
+
+    public List<Meal> getFiltered(LocalDate startDate, LocalDate endDate, int userId) {
+        return new ArrayList<>(repository.getFilteredByDate(startDate, endDate, userId));
     }
 }

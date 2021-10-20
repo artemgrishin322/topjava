@@ -17,19 +17,19 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryUserRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
-    private final Map<Integer,User> repository = new ConcurrentHashMap<>();
+    private final Map<Integer, User> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        save(new User(counter.incrementAndGet(), "admin", "admin@gmail.com", "ghp00Ap", Role.USER, Role.ADMIN));
-        save(new User(counter.incrementAndGet(), "test_user", "test.user@gmail.com", "pjk86Pa*_ghtu", Role.USER));
-        save(new User(counter.incrementAndGet(), "test_user", "test.user1@gmail.com", "pjk86Pa*_ghtu", Role.USER));
-        save(new User(counter.incrementAndGet(), "test_user", "test.user2@gmail.com", "pjk86Pa*_ghtu", Role.USER));
-        save(new User(counter.incrementAndGet(), "test_user", "test.user3@gmail.com", "pjk86Pa*_ghtu", Role.USER));
-        save(new User(counter.incrementAndGet(), "test_user_Paul", "test.user.paul@gmail.com", "pjk86Pa*_ghtu", Role.USER));
-        save(new User(counter.incrementAndGet(), "test_user_Michel", "test.user.michel@gmail.com", "pjk86Pa*_ghtu", Role.USER));
-        save(new User(counter.incrementAndGet(), "test_user_Laurence", "test.user.laurence@gmail.com", "pjk86Pa*_ghtu", Role.USER));
-        save(new User(counter.incrementAndGet(), "test_user_Kelly", "test.user.kelly@gmail.com", "pjk86Pa*_ghtu", Role.USER));
+        save(new User(null, "admin", "admin@gmail.com", "ghp00Ap", Role.USER, Role.ADMIN));
+        save(new User(null, "test_user", "test.user@gmail.com", "pjk86Pa*_ghtu", Role.USER));
+        save(new User(null, "test_user", "test.user1@gmail.com", "pjk86Pa*_ghtu", Role.USER));
+        save(new User(null, "test_user", "test.user2@gmail.com", "pjk86Pa*_ghtu", Role.USER));
+        save(new User(null, "test_user", "test.user3@gmail.com", "pjk86Pa*_ghtu", Role.USER));
+        save(new User(null, "test_user_Paul", "test.user.paul@gmail.com", "pjk86Pa*_ghtu", Role.USER));
+        save(new User(null, "test_user_Michel", "test.user.michel@gmail.com", "pjk86Pa*_ghtu", Role.USER));
+        save(new User(null, "test_user_Laurence", "test.user.laurence@gmail.com", "pjk86Pa*_ghtu", Role.USER));
+        save(new User(null, "test_user_Kelly", "test.user.kelly@gmail.com", "pjk86Pa*_ghtu", Role.USER));
     }
 
     @Override

@@ -16,7 +16,6 @@ import java.util.List;
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserCaloriesPerDay;
-import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 @Controller
 public class MealRestController {
@@ -61,7 +60,8 @@ public class MealRestController {
         if (startTime == null) startTime = LocalTime.MIN;
         if (endTime == null) endTime = LocalTime.MAX;
 
-        log.info("get filtered meals between {} and {}", startTime, endTime);
-        return MealsUtil.getFilteredByDateTimeTos(service.getAll(authUserId()), authUserCaloriesPerDay(), startDate, endDate, startTime, endTime);
+        log.info("get filtered meals between {} and {} date, {} and {} time", startDate, endDate, startTime, endTime);
+        List<Meal> filteredMeals = service.getFiltered(startDate, endDate, SecurityUtil.authUserId());
+        return MealsUtil.getFilteredByTimeTos(filteredMeals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
- }
+}

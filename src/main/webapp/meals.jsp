@@ -40,7 +40,8 @@
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
-    <form method="post" action="meals?action=filter">
+    <form method="get" action="${pageContext.request.contextPath}/meals">
+        <input type="hidden" name="action" id="action" value="filter">
         <dl>
             <dt>Start date:</dt>
             <dd><input type="date" name="startDate"></dd>
