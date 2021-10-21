@@ -71,7 +71,7 @@ public class InMemoryMealRepository implements MealRepository {
         if (userMeals != null) {
             return getFilteredByPredicate(userId, meal -> true);
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override
