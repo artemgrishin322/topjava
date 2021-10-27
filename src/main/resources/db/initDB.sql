@@ -27,11 +27,10 @@ CREATE TABLE user_roles
 
 CREATE TABLE meals
 (
-    user_id     INTEGER REFERENCES users      NOT NULL,
     id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    description VARCHAR                       NOT NULL,
-    calories    INTEGER             DEFAULT 0 NOT NULL,
-    date_time   TIMESTAMP(3)                  NOT NULL,
-    CONSTRAINT meals_idx UNIQUE (user_id, date_time),
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    user_id     INTEGER REFERENCES users ON DELETE CASCADE NOT NULL,
+    description VARCHAR                                    NOT NULL,
+    calories    INTEGER             DEFAULT 0              NOT NULL,
+    date_time   TIMESTAMP                                  NOT NULL,
+    CONSTRAINT meals_idx UNIQUE (user_id, date_time)
 );

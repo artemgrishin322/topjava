@@ -6,4 +6,5 @@ log
 *.patch
 patches
 spring-db.xml
+.properties
 
