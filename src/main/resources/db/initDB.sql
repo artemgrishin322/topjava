@@ -32,5 +32,5 @@ CREATE TABLE meals
     description VARCHAR                                    NOT NULL,
     calories    INTEGER             DEFAULT 0              NOT NULL,
     date_time   TIMESTAMP                                  NOT NULL,
-    CONSTRAINT meals_idx UNIQUE (user_id, date_time)
+    CONSTRAINT meals_unique_date_time_idx UNIQUE (user_id, date_time)
 );
