@@ -15,8 +15,6 @@ import java.time.LocalTime;
         @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.HALF_OPEN, query = "SELECT m FROM Meal m WHERE m.user.id=:userId AND " +
                 "m.dateTime >=: startDateTime AND m.dateTime <: endDateTime ORDER BY m.dateTime DESC"),
-        @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.id =: id AND m.user.id =: userId"),
-//        @NamedQuery(name = Meal.UPDATE, query = "")
 })
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(name = "uniqueUserDateTime", columnNames = {"user_id",
@@ -26,7 +24,6 @@ public class Meal extends AbstractBaseEntity {
     public static final String DELETE = "Meal.delete";
     public static final String ALL_SORTED = "Meal.getAllSorted";
     public static final String HALF_OPEN = "Meal.getBetweenHalfOpen";
-    public static final String GET = "Meal.get";
 
     @Column(name = "date_time", nullable = false)
     @NotNull
@@ -41,6 +38,7 @@ public class Meal extends AbstractBaseEntity {
     @Range(min = 10, max = 10000)
     private int calories;
 
+    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
