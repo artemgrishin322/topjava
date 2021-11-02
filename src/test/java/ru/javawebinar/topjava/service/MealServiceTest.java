@@ -1,6 +1,10 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -11,8 +15,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
+import java.time.temporal.ChronoField;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -26,6 +33,27 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+
+    @Rule
+    public TestRule watcher = new TestWatcher() {
+        private long startTime;
+
+        @Override
+        protected void starting(Description description) {
+            System.out.printf("Test method %s starts%n" +
+                    "==========================================================================================%n",
+                    description.getMethodName());
+            startTime = System.currentTimeMillis();
+        }
+
+        @Override
+        protected void finished(Description description) {
+            long endTime = System.currentTimeMillis() - startTime;
+            System.out.printf("Test method %s completion took %d ms%n" +
+                    "==========================================================================================%n",
+                    description.getMethodName(), endTime);
+        }
+    };
 
     @Autowired
     private MealService service;
