@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -37,6 +38,27 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+    private static final StringBuilder logTable = new StringBuilder();
+
+    @Rule
+    public final Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            String methodLog = String.format("Method %s ended with %d ms", description.getMethodName(), runtime(TimeUnit.MILLISECONDS));
+            logTable.append(methodLog).append("\n");
+            log.info(methodLog);
+        }
+    };
+
+    @ClassRule
+    public static final TestWatcher watcher = new TestWatcher() {
+        @Override
+        protected void finished(Description description) {
+            log.info(logTable.toString());
+        }
+    };
 
     @Autowired
     private MealService service;
