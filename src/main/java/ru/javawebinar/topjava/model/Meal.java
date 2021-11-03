@@ -17,7 +17,7 @@ import java.time.LocalTime;
                 "m.dateTime >=: startDateTime AND m.dateTime <: endDateTime ORDER BY m.dateTime DESC"),
 })
 @Entity
-@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(name = "uniqueUserDateTime", columnNames = {"user_id",
+@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(name = "unique_user_date_time", columnNames = {"user_id",
 "date_time"})})
 public class Meal extends AbstractBaseEntity {
 
@@ -39,6 +39,7 @@ public class Meal extends AbstractBaseEntity {
     private int calories;
 
     @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
