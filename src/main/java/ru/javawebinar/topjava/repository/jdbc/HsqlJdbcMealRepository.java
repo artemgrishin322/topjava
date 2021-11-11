@@ -8,18 +8,19 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.repository.jdbc.JdbcMealRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Repository
-@Profile(Profiles.POSTGRES_DB)
-public class JdbcMealRepositoryPostgres extends JdbcMealRepository {
+@Profile(Profiles.HSQL_DB)
+public class HsqlJdbcMealRepository extends JdbcMealRepository<Timestamp> {
     @Autowired
-    public JdbcMealRepositoryPostgres(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public HsqlJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
     @Override
-    protected LocalDateTime getProperDateTime(LocalDateTime dateTime) {
-        return dateTime;
+    protected Timestamp getProperDateTime(LocalDateTime dateTime) {
+        return Timestamp.valueOf(dateTime);
     }
 }

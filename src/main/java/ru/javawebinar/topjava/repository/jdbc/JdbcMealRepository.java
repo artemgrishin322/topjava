@@ -15,7 +15,6 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
 public abstract class JdbcMealRepository<T> implements MealRepository {
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
@@ -37,7 +36,8 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        MapSqlParameterSource map = new MapSqlParameterSource().addValue("id", meal.getId())
+        MapSqlParameterSource map = new MapSqlParameterSource()
+                .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
                 .addValue("date_time", getProperDateTime(meal.getDateTime()))
