@@ -26,32 +26,32 @@ public class JspMealController extends AbstractMealController {
     }
 
     @GetMapping
-    public String getMeals(Model model) {
+    public String get(Model model) {
         model.addAttribute("meals", getAll());
         return "meals";
     }
 
-    @GetMapping(params = "action=create")
+    @GetMapping("/create")
     public String openCreateForm(Model model) {
         Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000);
         model.addAttribute("meal", meal);
         return "mealForm";
     }
 
-    @GetMapping(params = "action=update")
+    @GetMapping("/update")
     public String openUpdateForm(@RequestParam int id, Model model) {
         Meal meal = get(id);
         model.addAttribute("meal", meal);
         return "mealForm";
     }
 
-    @GetMapping(params = "action=delete")
-    public String deleteMeal(@RequestParam int id) {
+    @GetMapping("/delete")
+    public String deleteById(@RequestParam int id) {
         delete(id);
-        return "redirect:meals";
+        return "redirect:/meals";
     }
 
-    @GetMapping(params = "action=filter")
+    @GetMapping("/filter")
     public String getFilteredMeals(@RequestParam String startDate, @RequestParam String endDate,
                                    @RequestParam String startTime, @RequestParam String endTime,
                                    Model model) {
@@ -62,6 +62,7 @@ public class JspMealController extends AbstractMealController {
 
     @PostMapping
     public String createOrUpdateMeal(HttpServletRequest request) throws UnsupportedEncodingException {
+        request.setCharacterEncoding("UTF-8");
         Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
