@@ -6,12 +6,13 @@
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
+<base href="${pageContext.request.contextPath}/">
 <body>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+<link rel="stylesheet" href="resources/css/style.css">
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h2><spring:message code="meal.title"/></h2>
-    <form method="get" action="${pageContext.request.contextPath}/meals/filter">
+    <form method="get" action="meals/filter">
         <input type="hidden">
         <dl>
             <dt><spring:message code="meal.fromDate"/></dt>
@@ -38,8 +39,8 @@
         <thead>
         <tr>
             <th><spring:message code="meal.date"/></th>
-            <th><spring:message code="meal.desc"/></th>
-            <th><spring:message code="meal.cal"/></th>
+            <th><spring:message code="meal.description"/></th>
+            <th><spring:message code="meal.calories"/></th>
             <th></th>
             <th></th>
         </tr>

@@ -61,8 +61,7 @@ public class JspMealController extends AbstractMealController {
     }
 
     @PostMapping
-    public String createOrUpdateMeal(HttpServletRequest request) throws UnsupportedEncodingException {
-        request.setCharacterEncoding("UTF-8");
+    public String createOrUpdateMeal(HttpServletRequest request) {
         Meal meal = new Meal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
