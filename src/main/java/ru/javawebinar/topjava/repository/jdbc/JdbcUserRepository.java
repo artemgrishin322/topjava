@@ -16,7 +16,6 @@ import ru.javawebinar.topjava.repository.UserRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -32,40 +31,33 @@ public class JdbcUserRepository implements UserRepository {
 
     private final SimpleJdbcInsert insertUser;
 
-    private final ValidationHandler handler;
-
     @Autowired
-    public JdbcUserRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, ValidationHandler handler) {
+    public JdbcUserRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertUser = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
 
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-        this.handler = handler;
     }
 
     @Override
     @Transactional
     public User save(User user) {
-        handler.validate(user);
+        ValidationHandler.validate(user);
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
         if (user.isNew()) {
             Number newKey = insertUser.executeAndReturnKey(parameterSource);
-            int userId = newKey.intValue();
-            insertOrUpdateRoles(user.getRoles(), userId, "create");
-            user.setId(userId);
+            user.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update("""
-                   UPDATE users SET name=:name, email=:email, password=:password, 
+                   UPDATE users SET name=:name, email=:email, password=:password,
                    registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id
-                """, parameterSource) == 0) {
-            return null;
-        } else if (Arrays.stream(insertOrUpdateRoles(user.getRoles(), user.id(), "update"))
-                .anyMatch(value -> value == 0)) {
-            return null;
-        }
+                """, parameterSource) != 0) {
+            deleteRoles(user.getId());
+        } else return null;
 
+        insertRoles(user.getRoles(), user.getId());
         return user;
     }
 
@@ -98,17 +90,13 @@ public class JdbcUserRepository implements UserRepository {
                 LEFT JOIN user_roles ur ON id = ur.user_id GROUP BY id ORDER BY max(name), max(email)""", ROW_MAPPER);
     }
 
-    private int[] insertOrUpdateRoles(Set<Role> roles, int userId, String action) {
-        if ("update".equals(action)) {
-            jdbcTemplate.update("DELETE FROM user_roles WHERE user_id = ?", userId);
-        }
-
+    private void insertRoles(Set<Role> roles, int userId) {
         List<Role> roleList = List.copyOf(roles);
-        int[] updateCounts = jdbcTemplate.batchUpdate("INSERT INTO user_roles(role, user_id) VALUES (?, ?)",
+        jdbcTemplate.batchUpdate("INSERT INTO user_roles(role, user_id) VALUES (?, ?)",
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, roleList.get(i).toString());
+                        ps.setString(1, roleList.get(i).name());
                         ps.setInt(2, userId);
                     }
 
@@ -117,7 +105,9 @@ public class JdbcUserRepository implements UserRepository {
                         return roleList.size();
                     }
                 });
+    }
 
-        return updateCounts;
+    private void deleteRoles(int userId) {
+        jdbcTemplate.update("DELETE FROM user_roles WHERE user_id = ?", userId);
     }
 }
