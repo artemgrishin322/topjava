@@ -1,7 +1,7 @@
 CURL requests to check Meal API of Topjava project
 ==================================================
 
-##GET all meals
+###GET all meals
 
 To request all user's meals, send a GET request to the /rest/meals URL. 
 The response body will contain all user's meals in JSON.
@@ -64,7 +64,7 @@ curl --location --request GET 'http://localhost:8080/topjava/rest/meals'
 ]
 ```
 
-##GET specific meal
+###GET specific meal
 
 To request meal, send a GET request to the object specific URL (id). 
 The response body will contain specific meal info in JSON. Note that the result of this request is Meal object.
@@ -83,7 +83,7 @@ curl --location --request GET 'http://localhost:8080/topjava/rest/meals/100003'
 }
 ```
 
-##DELETE meal
+###DELETE meal
 
 To delete meal, send a DELETE request to the object specific URL. The response will have no content since it is delete 
 request. The attempt to delete the same meal twice will produce NotFoundException.
@@ -93,7 +93,7 @@ curl --location --request DELETE 'http://localhost:8080/topjava/rest/meals/10000
 ```
 - Response will have empty body
 
-##PUT an update for meal
+###PUT an update for meal
 
 To update meal, send a PUT request to the object specific URL. The request body should contain JSON representation 
 of updated fields of Meal object. The response will have no content since it is update request. Any unspecidied field 
@@ -113,7 +113,7 @@ curl --location --request PUT 'http://localhost:8080/topjava/rest/meals/100002' 
 ```
 - Response will have empty body
 
-##POST creation of meal
+###POST creation of meal
 
 To create new meal, send a POST request to the application URL. The request body should contain JSON description of 
 a new Meal object without id. The response will have body with meal JSON representation. Any unspecified field of an 
@@ -142,7 +142,7 @@ curl --location --request POST 'http://localhost:8080/topjava/rest/meals/' \
 }
 ```
 
-##GET filtered by date and time meals
+###GET filtered by date and time meals
 
 To get meals filtered by date and time of creation, send a GET request to the application URL with "/filtered" suffix. 
 The request should conatin next parameters:  
