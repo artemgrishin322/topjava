@@ -32,4 +32,10 @@ public class UserTestData {
         updated.setRoles(Collections.singletonList(Role.ADMIN));
         return updated;
     }
+
+    public static User getUserWithMeals() {
+        User userWithMeals = new User(user);
+        userWithMeals.setMeals(MealTestData.meals);
+        return userWithMeals;
+    }
 }
