@@ -19,9 +19,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
@@ -91,7 +91,7 @@ class MealRestControllerTest extends AbstractControllerTest {
         List<MealTo> tos = MealsUtil.getFilteredTos(meals, UserTestData.user.getCaloriesPerDay(),
                 LocalTime.of(10, 45), LocalTime.of(19, 33));
         perform(MockMvcRequestBuilders.get(REST_URL +
-                "filtered")
+                        "filtered")
                 .param("startDate", "2020-01-30")
                 .param("startTime", "10:45:00")
                 .param("endDate", "2020-01-31")

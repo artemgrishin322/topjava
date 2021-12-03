@@ -50,6 +50,8 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     void getWithMeals() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "/with-meals"))
                 .andDo(print())
-                .andExpect(USER_MATCHER.contentJson(getUserWithMeals()));
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(USER_WITH_MEALS_MATCHER.contentJson(getUserWithMeals()));
     }
 }
