@@ -12,24 +12,46 @@
 <section>
     <h3><spring:message code="meal.title"/></h3>
 
-    <form method="get" action="meals/filter">
+<%--    <form method="get" action="meals/filter">--%>
+<%--        <dl>--%>
+<%--            <dt><spring:message code="meal.startDate"/>:</dt>--%>
+<%--            <dd><input type="date" name="startDate" value="${param.startDate}"></dd>--%>
+<%--        </dl>--%>
+<%--        <dl>--%>
+<%--            <dt><spring:message code="meal.endDate"/>:</dt>--%>
+<%--            <dd><input type="date" name="endDate" value="${param.endDate}"></dd>--%>
+<%--        </dl>--%>
+<%--        <dl>--%>
+<%--            <dt><spring:message code="meal.startTime"/>:</dt>--%>
+<%--            <dd><input type="time" name="startTime" value="${param.startTime}"></dd>--%>
+<%--        </dl>--%>
+<%--        <dl>--%>
+<%--            <dt><spring:message code="meal.endTime"/>:</dt>--%>
+<%--            <dd><input type="time" name="endTime" value="${param.endTime}"></dd>--%>
+<%--        </dl>--%>
+<%--        <button type="submit"><spring:message code="meal.filter"/></button>--%>
+<%--    </form>--%>
+
+    <form method="post" id="mealFilter">
         <dl>
-            <dt><spring:message code="meal.startDate"/>:</dt>
-            <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
+            <dt><label for="startDate"><spring:message code="meal.startDate"/></label></dt>
+            <dd><input type="date" class="form-control" id="startDate" name="startDate"></dd>
         </dl>
         <dl>
-            <dt><spring:message code="meal.endDate"/>:</dt>
-            <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
+            <dt><label for="endDate"><spring:message code="meal.endDate"/></label></dt>
+            <dd><input type="date" class="form-control" id="endDate" name="endDate"></dd>
         </dl>
         <dl>
-            <dt><spring:message code="meal.startTime"/>:</dt>
-            <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
+            <dt><label for="startTime"><spring:message code="meal.startTime"/></label></dt>
+            <dd><input type="time" class="form-control" id="startTime" name="startTime"></dd>
         </dl>
         <dl>
-            <dt><spring:message code="meal.endTime"/>:</dt>
-            <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
+            <dt><label for="endTime"><spring:message code="meal.endTime"/></label></dt>
+            <dd><input type="time" class="form-control" id="endTime" name="endTime"></dd>
         </dl>
-        <button type="submit"><spring:message code="meal.filter"/></button>
+        <button type="button" class="btn btn-primary" onclick="filter()">
+            <spring:message code="meal.filter"/>
+        </button>
     </form>
 
     <div class="jumbotron pt-4">

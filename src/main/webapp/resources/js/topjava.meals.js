@@ -24,7 +24,7 @@ $(function () {
                     "orderable": false
                 },
                 {
-                    "dafaultContent": "Delete",
+                    "defaultContent": "Delete",
                     "orderable": false
                 }
             ],

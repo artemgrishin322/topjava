@@ -1,8 +1,10 @@
 let form;
+let filterForm;
 
 function makeEditable(datatableApi) {
     ctx.datatableApi = datatableApi;
     form = $('#detailsForm');
+    filterForm = $('#mealFilter')
     $(".delete").click(function () {
         if (confirm('Are you sure?')) {
             deleteRow($(this).closest('tr').attr("id"));
@@ -77,4 +79,19 @@ function failNoty(jqXHR) {
         layout: "bottomRight"
     });
     failedNote.show()
+}
+
+function filter() {
+    $.ajax({
+        type: "GET",
+        url: ctx.ajaxUrl + "filter",
+        data: filterForm.serialize()
+    }).done(function (data) {
+        updateTableAfterFilter(data);
+        successNoty("Filtered");
+    });
+}
+
+function updateTableAfterFilter(data) {
+    ctx.datatableApi.clear().rows.add(data).draw();
 }
