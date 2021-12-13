@@ -31,28 +31,16 @@ $(function () {
                     "data": "dateTime",
                     "render": function (date, type, row) {
                         if (type === "display") {
-                            return date.substring(0, 10);
+                            return date.substring(0, 10) + " " + date.substring(11, 16);
                         }
                         return date;
                     }
                 },
                 {
-                    "data": "description",
-                    "render": function (data, type, row) {
-                        if (type === "display") {
-                            return data
-                        }
-                        return data;
-                    }
+                    "data": "description"
                 },
                 {
-                    "data": "calories",
-                    "render": function (data, type, row) {
-                        if (type === "display") {
-                            return data
-                        }
-                        return data;
-                    }
+                    "data": "calories"
                 },
                 {
                     "orderable": false,
@@ -72,7 +60,7 @@ $(function () {
                 ]
             ],
             "createdRow": function (row, data, dataIndex) {
-                    $(row).attr("data-meal-excess", !!data.excess);
+                    $(row).attr("data-meal-excess", data.excess);
             }
         })
     );
