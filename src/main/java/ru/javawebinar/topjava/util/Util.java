@@ -1,10 +1,6 @@
 package ru.javawebinar.topjava.util;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
-import org.springframework.validation.BindingResult;
-
-import java.util.stream.Collectors;
 
 public class Util {
     private Util() {

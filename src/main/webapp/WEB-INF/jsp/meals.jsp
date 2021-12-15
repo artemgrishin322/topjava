@@ -6,7 +6,6 @@
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
 <script type="text/javascript" src="resources/js/topjava.common.js" defer></script>
-<script type="text/javascript" src="resources/js/topjava.meals.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <div class="jumbotron pt-4">
@@ -114,38 +113,11 @@
 <link rel="stylesheet" type="text/css" href="webjars/datetimepicker/2.5.20-1/jquery.datetimepicker.css">
 <script src="webjars/datetimepicker/2.5.20-1/jquery.js"></script>
 <script src="webjars/datetimepicker/2.5.20-1/build/jquery.datetimepicker.full.min.js"></script>
-<script>
-    $('#startDate').datetimepicker({
-        timepicker: false,
-        datepicker: true,
-        format: 'Y-m-d'
-    });
-    $('#endDate').datetimepicker({
-        timepicker: false,
-        datepicker: true,
-        format: 'Y-m-d'
-    });
-    $('#startTime').datetimepicker({
-        timepicker: true,
-        datepicker: false,
-        format: 'H:i',
-        step: 5
-    });
-    $('#endTime').datetimepicker({
-        timepicker: true,
-        datepicker: false,
-        format: 'H:i',
-        step: 5
-    });
-    $('#dateTime').datetimepicker({
-        format: 'Y-m-d H:i',
-        step: 5
-    });
-</script>
-<script type="text/javascript">
-    const i18n = [];
-    i18n["addTitle"] = '<spring:message code="meal.add"/>';
-    i18n["editTitle"] = '<spring:message code="meal.edit"/>';
-</script>
-<jsp:include page="fragments/i18n.jsp"/>
+<script type="text/javascript" src="resources/js/topjava.meals.js"></script>
+<spring:message code="meal.add" var="add"/>
+<spring:message code="meal.edit" var="edit"/>
+<jsp:include page="fragments/i18n.jsp">
+    <jsp:param name="addTitle" value="${add}"/>
+    <jsp:param name="editTitle" value="${edit}"/>
+</jsp:include>
 </html>

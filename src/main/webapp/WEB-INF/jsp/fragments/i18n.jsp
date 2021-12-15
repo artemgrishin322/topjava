@@ -3,6 +3,10 @@
 
 <html>
 <script type="text/javascript">
+    const i18n = [];
+    i18n["addTitle"] = '${param.addTitle}';
+    i18n["editTitle"] = '${param.editTitle}';
+
     <c:forEach var="key" items='<%=new String[]{"common.deleted","common.saved", "common.errorStatus","common.confirm"}%>'>
     i18n["${key}"] = "<spring:message code="${key}"/>";
     </c:forEach>
