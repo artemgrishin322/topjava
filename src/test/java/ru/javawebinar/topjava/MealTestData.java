@@ -34,7 +34,15 @@ public class MealTestData {
         return new Meal(null, of(2020, Month.FEBRUARY, 1, 18, 0), "Созданный ужин", 300);
     }
 
+    public static Meal getNewInvalid() {
+        return new Meal(null, of(2021, Month.DECEMBER, 21, 21, 0), "N", 1);
+    }
+
     public static Meal getUpdated() {
         return new Meal(MEAL1_ID, meal1.getDateTime().plus(2, ChronoUnit.MINUTES), "Обновленный завтрак", 200);
+    }
+
+    public static Meal getUpdatedInvalid() {
+        return new Meal(MEAL1_ID, meal1.getDateTime().plus(10, ChronoUnit.DAYS), "M", 1);
     }
 }

@@ -96,6 +96,16 @@ class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void updateInvalid() throws Exception {
+        User invalidUpdated = getUpdatedInvalid();
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(invalidUpdated, invalidUpdated.getPassword())))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
     void createWithLocation() throws Exception {
         User newUser = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
@@ -109,6 +119,16 @@ class AdminRestControllerTest extends AbstractControllerTest {
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
         USER_MATCHER.assertMatch(userService.get(newId), newUser);
+    }
+
+    @Test
+    void createInvalid() throws Exception {
+        User invalidUser = getNewInvalid();
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(jsonWithPassword(invalidUser, invalidUser.getPassword())))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test

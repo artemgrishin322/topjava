@@ -70,6 +70,20 @@
         <property name="fallbackToSystemLocale" value="false"/>
     </bean>
 
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager" ref="cnManager"/>
+        <property name="defaultViews">
+            <list>
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="ignoreAcceptHeader" value="false"/>
+        <property name="defaultContentType" value="application/json"/>
+    </bean>
+
     <mvc:interceptors>
         <bean class="ru.javawebinar.topjava.web.interceptor.ModelInterceptor"/>
     </mvc:interceptors>
